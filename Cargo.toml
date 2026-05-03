@@ -9,6 +9,7 @@ gpui_platform = { git = "https://github.com/zed-industries/zed", features = [
     "font-kit",
 ] }
 gpui-component = { git = "https://github.com/longbridge/gpui-component" }
+native-dialog = "0.9.6"
 
 [package.metadata.bin]
 bacon = { version = "=3.22.0" }
