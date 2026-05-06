@@ -15,10 +15,16 @@ make install
 
 Run the app in dev mode:
 ```
+make build-native
 make dev
 ```
 
-Run the app in release mode:
+Build the app in release mode:
 ```
 make build
+```
+
+Build MacOS dmg file:
+```
+make build-dmg
 ```
