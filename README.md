@@ -15,7 +15,7 @@ make install
 
 Run the app in dev mode:
 ```
-make watch
+make dev
 ```
 
 Run the app in release mode:

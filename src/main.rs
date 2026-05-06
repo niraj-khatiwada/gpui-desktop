@@ -7,11 +7,11 @@ use gpui_component::{
     button::Button,
     resizable::{h_resizable, resizable_panel},
 };
-use native_dialog::{DialogBuilder, MessageLevel};
+mod native;
 
-struct HelloWorld;
+struct RootView;
 
-impl Render for HelloWorld {
+impl Render for RootView {
     fn render(&mut self, w: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         div()
             .size_full()
@@ -36,20 +36,40 @@ impl Render for HelloWorld {
                             .justify_center()
                             .items_center()
                             .child(
-                                Button::new("btn-primary")
-                                    .small()
-                                    .label("Greet")
-                                    .cursor(gpui::CursorStyle::PointingHand)
-                                    .text_color(rgb(0xFFFFFF))
-                                    .bg(rgb(0x007AFF))
-                                    .on_click(move |_, _, _| {
-                                        DialogBuilder::message()
-                                            .set_level(MessageLevel::Info)
-                                            .set_title("Welcome to GPUI")
-                                            .confirm()
-                                            .show()
-                                            .unwrap();
-                                    }),
+                                div()
+                                    .flex()
+                                    .flex_col()
+                                    .gap(px(10.0))
+                                    .child(
+                                        Button::new("dialog")
+                                            .small()
+                                            .label("Open Native Dialog")
+                                            .cursor(gpui::CursorStyle::PointingHand)
+                                            .text_color(rgb(0xFFFFFF))
+                                            .bg(rgb(0x007AFF))
+                                            .on_click(move |_, _, _| {
+                                                match native::show_dialog("Welcome to GPUI", Some("This UI is pure native rendered via Apple's Metal framework."), Some("Nice!")){
+                                                    Ok(_) => {},
+                                                    Err(err) => println!("{:?}", err),
+                                                }
+                                            }),
+                                    )
+                                    .child(
+                                        Button::new("color-picker")
+                                            .small()
+                                            .label("Open Color Picker")
+                                            .cursor(gpui::CursorStyle::PointingHand)
+                                            .text_color(rgb(0xFFFFFF))
+                                            .bg(rgb(0x007AFF))
+                                            .on_click(move |_, _, _| {
+                                                match native::pick_color() {
+                                                    Ok(color) => {
+                                                        println!("Color {:?}", color)
+                                                    }
+                                                    Err(err) => println!("{:?}", err),
+                                                }
+                                            }),
+                                    ),
                             )
                             .into_any_element(),
                     ),
@@ -75,7 +95,7 @@ fn main() {
                     ..WindowOptions::default()
                 },
                 |w, cx| {
-                    let view = cx.new(|_| HelloWorld);
+                    let view = cx.new(|_| RootView);
                     cx.new(|cx| Root::new(view, w, cx).bg(rgba(0xFFFFFFEB)))
                 },
             )

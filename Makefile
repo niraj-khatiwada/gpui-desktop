@@ -1,6 +1,13 @@
 install:
 	cargo update && cargo bin --install
-watch:
+dev:
 	cargo bacon
-build:
-	cargo run --release
+
+build-native:
+	sh scripts/build-native.sh
+
+build: build-native
+	cargo build --release
+
+build-dmg: build
+	sh scripts/build-dmg.sh
