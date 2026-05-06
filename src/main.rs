@@ -69,6 +69,22 @@ impl Render for RootView {
                                                     Err(err) => println!("{:?}", err),
                                                 }
                                             }),
+                                    ).child(
+                                        Button::new("context-menu")
+                                            .small()
+                                            .label("Show Context Menu")
+                                            .cursor(gpui::CursorStyle::PointingHand)
+                                            .text_color(rgb(0xFFFFFF))
+                                            .bg(rgb(0x007AFF))
+                                            .on_click(move |evt, _, _| {
+                                                let pos=evt.position();
+                                                match native::show_context_menu(vec!["Menu 1", "Menu 2: This is a very very long menu"],(pos.x.as_f32(), pos.y.as_f32())) {
+                                                    Ok(color) => {
+                                                        println!("Color {:?}", color)
+                                                    }
+                                                    Err(err) => println!("{:?}", err),
+                                                }
+                                            }),
                                     ),
                             )
                             .into_any_element(),

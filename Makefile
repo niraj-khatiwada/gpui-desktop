@@ -1,5 +1,6 @@
 install:
 	cargo update && cargo bin --install
+
 dev:
 	cargo bacon
 
